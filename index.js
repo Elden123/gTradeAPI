@@ -27,7 +27,7 @@ app.get('/trend/', function (req, res) {
 
 app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
-  let company=req.parms.company
+  let company=req.query.company;
   googleTrends.interestOverTime({keyword: company})
   .then(function(results){
     console.log(results);
