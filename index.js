@@ -8,7 +8,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/health', function (req, res) {
-    res.send('Good connection');
+    res.send('Good connection!');
 });
 
 app.get('/trends/', function (req, res) {
