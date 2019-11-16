@@ -28,8 +28,8 @@ app.get('/trend/', function (req, res) {
 
 app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
-  let company=req.query.company;
-  googleTrends.interestOverTime({keyword: company})
+  //let company=req.query.company;
+  googleTrends.interestOverTime({keyword: "Google"})
   .then(function(results){
     console.log(results);
   })
@@ -49,7 +49,7 @@ app.get('/sentiment', function (req, res) {
       })
       .catch(err => {
         console.log('error:', err);
-      });  
+      });
 });
 
 app.listen(port, function () {
