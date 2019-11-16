@@ -29,7 +29,7 @@ app.get('/trend/', function (req, res) {
 app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
   let company=req.query.company;
-  res.send(keyword+"\n");
+  res.send(company+"\n");
   googleTrends.interestByRegion({keyword: company, startTime: new Date('2019-11-15'), endTime: new Date('2019-11-16'), geo: 'US'});
   .then((results) => {
     res.send(results);
