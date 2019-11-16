@@ -11,7 +11,7 @@ app.get('/health', function (req, res) {
     res.send('Great connection');
 });
 
-app.get('/trends/', function (req, res) {
+app.get('/trend/', function (req, res) {
     //res.send("All company trends");
     googleTrends.realTimeTrends({
         geo: 'US',
