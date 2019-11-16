@@ -48,7 +48,7 @@ app.get('/sentiment', function (req, res) {
       })
       .catch(err => {
         console.log('error:', err);
-      });  
+      });
 });
 
 app.listen(port, function () {
