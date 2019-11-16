@@ -28,13 +28,13 @@ app.get('/trend/', function (req, res) {
 app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
   //let company=req.query.company;
-  googleTrends.interestOverTime({keyword: "Google"})
-  .then(function(results){
-    console.log(results);
+  googleTrends.interestByRegion({keyword: 'Donald Trump', startTime: new Date('2017-02-01'), endTime: new Date('2017-02-06'), geo: 'US-CA'})
+  .then((res) => {
+    console.log(res);
   })
-  .catch(function(err){
-    console.error(err);
-  });
+  .catch((err) => {
+    console.log(err);
+  })
 });
 
 app.get('/sentiment', function (req, res) {
