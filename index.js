@@ -27,13 +27,14 @@ app.get('/trend/', function (req, res) {
 
 app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
-      googleTrends.interestOverTime({keyword: company})
-        .then(function(results){
-          console.log('Trend for company: ' + results);
-        })
-        .catch(function(err){
-          console.log('Error: '+err);
-      });
+  let company=req.parms.company
+  googleTrends.interestOverTime({keyword: company})
+  .then(function(results){
+    console.log(results);
+  })
+  .catch(function(err){
+    console.error(err);
+  });
 });
 
 app.listen(port, function () {
