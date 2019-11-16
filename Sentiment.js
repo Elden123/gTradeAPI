@@ -59,7 +59,7 @@ function getSentiment(URL, Company){
       }
     }
   };
-  
+    
   return naturalLanguageUnderstanding.analyze(analyzeParams)
     
   
