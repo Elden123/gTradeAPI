@@ -41,16 +41,16 @@ app.get('/trends/:company', function (req, res) {
 
 app.get('/sentiment', function (req, res) {
   //res.send("All company trends");
-      // var result = [];
-      // sentiment.getSentiment('https://www.breitbart.com/clips/2019/11/03/trump-i-think-nancy-pelosi-has-lost-her-mind/', 'Nancy').then(analysisResults => {
-      //   result.push(analysisResults.result.sentiment.targets[0].label);
-      //   result.push(analysisResults.result.sentiment.targets[0].score);
-      //   res.send(results);
-      //   console.log(result);
-      // })
-      // .catch(err => {
-      //   console.log('error:', err);
-      // });
+      var result = [];
+      sentiment.getSentiment('https://www.breitbart.com/clips/2019/11/03/trump-i-think-nancy-pelosi-has-lost-her-mind/', 'Nancy').then(analysisResults => {
+        result.push(analysisResults.result.sentiment.targets[0].label);
+        result.push(analysisResults.result.sentiment.targets[0].score);
+        res.send(results);
+        console.log(result);
+      })
+      .catch(err => {
+        console.log('error:', err);
+      });
 });
 
 app.listen(port, function () {
