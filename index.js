@@ -30,8 +30,8 @@ app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
   //let company=req.query.company;
   googleTrends.interestByRegion({keyword: 'Donald Trump', startTime: new Date('2017-02-01'), endTime: new Date('2017-02-06'), geo: 'US-CA'})
-  .then((res) => {
-    console.log(res);
+  .then((results) => {
+    res.send(results);
   })
   .catch((err) => {
     console.log(err);
