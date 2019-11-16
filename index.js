@@ -34,7 +34,7 @@ app.get('/trends/:company', function (req, res) {
     res.send(results);
   })
   .catch((err) => {
-    console.log(err);
+    res.send(err);
   })
 });
 
