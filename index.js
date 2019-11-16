@@ -2,6 +2,7 @@ let express = require('express');
 let googleTrends = require('google-trends-api');
 let port = process.env.PORT || 3000;
 let app = express();
+var sentiment = require('./sentiment');
 
 app.get('/', function (req, res) {
     res.send(JSON.stringify({ Hello: 'World'}));
