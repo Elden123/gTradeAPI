@@ -2,7 +2,7 @@ let express = require('express');
 let googleTrends = require('google-trends-api');
 let port = process.env.PORT || 3000;
 let app = express();
-var sentiment = require('./Sentiment');
+//var sentiment = require('./Sentiment');
 
 app.get('/', function (req, res) {
     res.send(JSON.stringify({ Hello: 'World'}));
@@ -30,9 +30,29 @@ app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
   var companyName=req.params.company.toLowerCase();
   // res.send(companyName);
-  googleTrends.interestOverTime({keyword: companyName, startTime: new Date(Date.now() - (7 * 24 * 60 * 60 * 1000))}, function(err, results) {
-    if (err) res.send('oh no error!', err);
-    else res.send(results);
+  googleTrends.interestOverTime({keyword: companyName, startTime: new Date(Date.now() - (8 * 24 * 60 * 60 * 1000))}, function(err, results) {
+        if (err){
+          res.send('oh no error!', err);
+        }
+        else{
+          let results1=JSON.parse(results);
+          res.send(results1);
+          try{
+            console.log(Object.keys(results1));
+            for(i in results1.default.timelineData){
+              console.log(results1.default.timelineData[i].value);
+            }
+            if(results1.default.timelineData[6].value[0]==100){
+              console.log(companyName+" IS trending!");
+            }
+            else{
+              console.log(companyName+" is NOT trending :(")
+            }
+          }
+          catch(error){
+            console.log(error);
+          }
+        }
   });
 });
 
