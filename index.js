@@ -21,6 +21,7 @@ app.get('/trend/', function (req, res) {
         if (err) {
           res.send(err);
         }else{
+
           res.send(results);
         }
       });
@@ -31,28 +32,34 @@ app.get('/trends/:company', function (req, res) {
   var companyName=req.params.company.toLowerCase();
   // res.send(companyName);
   googleTrends.interestOverTime({keyword: companyName, startTime: new Date(Date.now() - (8 * 24 * 60 * 60 * 1000))}, function(err, results) {
-        if (err){
-          res.send('oh no error!', err);
-        }
-        else{
-          let results1=JSON.parse(results);
-          res.send(results1);
-          try{
-            console.log(Object.keys(results1));
-            for(i in results1.default.timelineData){
-              console.log(results1.default.timelineData[i].value);
-            }
-            if(results1.default.timelineData[6].value[0]==100){
-              console.log(companyName+" IS trending!");
-            }
-            else{
-              console.log(companyName+" is NOT trending :(")
-            }
+    if (err){
+      res.send('ERROR: ', err);
+    }
+    else{
+      let results1=JSON.parse(results);
+      res.send(results1);
+      console.log("\n");
+      console.log(companyName)
+      for(i in results1.default.timelineData){
+        console.log(results1.default.timelineData[i].value);
+      }
+
+      if(results1.default.timelineData[6].value[0]==100){
+        console.log(companyName+" IS trending!");
+        let trendingDiff=100-results1.default.timelineData[5].value[0]
+        console.log("Trend increase points: "+trendingDiff)
+      }
+      else{
+        console.log(companyName+" is NOT trending :(")
+        var lastTrending=results1.default.timelineData[0].formattedTime;
+        for(i in results1.default.timelineData){
+          if(results1.default.timelineData[i].value[0]==100){
+            lastTrending=results1.default.timelineData[i].formattedTime;
           }
-          catch(error){
-            console.log(error);
-          }
         }
+        console.log(companyName+" was last trending on "+lastTrending)
+      }
+    }
   });
 });
 
