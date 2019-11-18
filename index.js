@@ -28,8 +28,9 @@ app.get('/trend/', function (req, res) {
 
 app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
-  let company=req.query.company;
-  googleTrends.interestOverTime({keyword: company, startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))}, function(err, results) {
+  var companyName=req.params.company.toLowerCase();
+  // res.send(companyName);
+  googleTrends.interestOverTime({keyword: companyName, startTime: new Date(Date.now() - (7 * 24 * 60 * 60 * 1000))}, function(err, results) {
     if (err) res.send('oh no error!', err);
     else res.send(results);
   });
