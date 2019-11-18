@@ -2,7 +2,7 @@ let express = require('express');
 let googleTrends = require('google-trends-api');
 let port = process.env.PORT || 3000;
 let app = express();
-var sentiment = require('Sentiment.js');
+//let sentiment = require('Sentiment.js');
 
 app.get('/', function (req, res) {
     res.send(JSON.stringify({ Hello: 'World'}));
@@ -29,14 +29,10 @@ app.get('/trend/', function (req, res) {
 app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
   let company=req.query.company;
-  res.send(company);
-  googleTrends.interestByRegion({keyword: company, startTime: new Date('2019-11-15'), endTime: new Date('2019-11-16'), geo: 'US'});
-  .then((results) => {
-    res.send(results);
-  })
-  .catch((err) => {
-    res.send(err);
-  })
+  googleTrends.interestOverTime({keyword: company, startTime: new Date(Date.now() - (24 * 60 * 60 * 1000))}, function(err, results) {
+    if (err) res.send('oh no error!', err);
+    else res.send(results);
+  });
 });
 
 app.get('/sentiment', function (req, res) {
