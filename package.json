@@ -19,6 +19,8 @@
   "homepage": "https://github.com/Elden123/gTradeAPI#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "google-trends-api": "^4.9.0"
+    "google-trends-api": "^4.9.0",
+    "ibm-watson": "^5.1.0",
+    "newsapi": "^2.4.0"
   }
 }
