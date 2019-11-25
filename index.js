@@ -35,7 +35,7 @@ app.get('/trends/:company', function (req, res) {
   // res.send(companyName);
   googleTrends.interestOverTime({keyword: companyName, startTime: new Date(Date.now() - (8 * 24 * 60 * 60 * 1000))}, function(err, results) {
     if (err){
-      res.send('ERROR: ', err);
+      res.send('ERROR: ' + err);
     }
     else{
       let results1=JSON.parse(results);
@@ -43,12 +43,12 @@ app.get('/trends/:company', function (req, res) {
       console.log("\n");
       console.log(companyName)
       for(i in results1.default.timelineData){
-        console.log(results1.default.timelineData[i].value);
+        console.log(results1.default.timelineData[i].value[0]);
       }
 
-      if(results1.default.timelineData[6].value[0]==100){
+      if(results1.default.timelineData[5].value[0]==100){
         console.log(companyName+" IS trending!");
-        let trendingDiff=100-results1.default.timelineData[5].value[0]
+        let trendingDiff=100-results1.default.timelineData[5].value[0];
         console.log("Trend increase points: "+trendingDiff);
         res.send("trending" + "+" + trendingDiff);
       }
