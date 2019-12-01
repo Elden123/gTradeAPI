@@ -10,10 +10,16 @@ app.get('/', function (req, res) {
     res.send(JSON.stringify({ Hello: 'World'}));
 });
 
+/**
+ * this is used to see if there is a good connection to this API
+ */
 app.get('/health', function (req, res) {
     res.send('Great connection');
 });
 
+/**
+ * responds with all of the current trends of the day
+ */
 app.get('/trend/', function (req, res) {
     //res.send("All company trends");
     googleTrends.realTimeTrends({
@@ -29,6 +35,9 @@ app.get('/trend/', function (req, res) {
       });
 });
 
+/**
+ * responds with if the :company is trending or not trending based off of data from the last week
+ */
 app.get('/trends/:company', function (req, res) {
   //res.send("All company trends");
   var companyName=req.params.company.toLowerCase();
@@ -68,6 +77,10 @@ app.get('/trends/:company', function (req, res) {
 });
 
 app.use(express.json());
+
+/**
+ * responds with the sentiment from a url passed through json searching on the keywork :company
+ */
 app.get('/sentiment/:company', function (req, res) {
   //res.send("All company trends");
       var result = [];
@@ -87,6 +100,9 @@ app.get('/sentiment/:company', function (req, res) {
       
 });
 
+/**
+ * responds with a list of urls with news articles containing keywork :company
+ */
 app.get('/links/:company', function (req, res) {
   let urlArray = [];
   let company = req.params.company;
@@ -109,10 +125,16 @@ app.get('/links/:company', function (req, res) {
   });
 });
 
+/**
+ * another health indicator
+ */
 app.get('/healthz', function (req, res) {
   res.send('Great connection');
 });
 
+/**
+ * responds with the complete info for our webapp's front end about the trendiness of a company
+ */
 app.get('/complete/trends/:company', function(req, res) {
   var companyName=req.params.company.toLowerCase();
   // res.send(companyName);
