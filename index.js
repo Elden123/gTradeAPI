@@ -109,6 +109,98 @@ app.get('/links/:company', function (req, res) {
   });
 });
 
+app.get('/healthz', function (req, res) {
+  res.send('Great connection');
+});
+
+app.get('/complete/trends/:company', function(req, res) {
+  var companyName=req.params.company.toLowerCase();
+  // res.send(companyName);
+  googleTrends.interestOverTime({keyword: companyName, startTime: new Date(Date.now() - (8 * 24 * 60 * 60 * 1000))}, function(err, results) {
+    if (err){
+      res.send('ERROR: ' + err);
+    }
+    else{
+      let results1=JSON.parse(results);
+      //res.send(results1);
+      console.log("\n");
+      console.log(companyName)
+      for(i in results1.default.timelineData){
+        console.log(results1.default.timelineData[i].value[0]);
+      }
+
+      if(results1.default.timelineData[5].value[0]==100){
+        console.log(companyName+" IS trending!");
+        let trendingDiff=100-results1.default.timelineData[5].value[0];
+        console.log("Trend increase points: "+trendingDiff);
+        //res.send("trending" + "+" + trendingDiff);
+        let urlArray = [];
+        let company = req.params.company;
+        let newsArticles = newsapi.v2.everything({
+            qinTitle: '+' + company,
+            q: '+' + company,
+            sortBy: 'relevancy',
+            language: 'en'
+        }).then(response => {
+            let averageSentiment = 0;
+            let numOfNews = 0;
+            for (let i = 0; i < response.articles.length; i++)
+            {
+                // Push URL strings onto array 
+                //urlArray.push(response.articles[i].url);
+                var result = [];
+                let company = req.params.company;
+                let url = response.articles[i].url;
+                
+                sentiment.getSentiment(url, company).then(analysisResults => {
+                  result.push(analysisResults.result.sentiment.targets[0].label);
+                  result.push(analysisResults.result.sentiment.targets[0].score);
+                  // averageSentiment[analysisResults.result.sentiment.targets[0].label] 
+                  // res.send(result);
+                  console.log();
+                  console.log(result);
+                  if(analysisResults.result.sentiment.targets[0].label == 'positive') {
+                    numOfNews += 1;
+                    averageSentiment += analysisResults.result.sentiment.targets[0].score;
+                  } else if(analysisResults.result.sentiment.targets[0].label == 'negative') {
+                    numOfNews += 1;
+                    averageSentiment += analysisResults.result.sentiment.targets[0].score;
+                  }
+                  console.log(averageSentiment);
+
+                  if(numOfNews > 7) {
+                    console.log("***********************")
+                    res.send(averageSentiment + "+" + numOfNews + ":" + result);
+                  }
+                })
+                .catch(err => {
+                  console.log('error:', err);
+                });
+            }
+
+            //console.log(urlArray);
+            //res.send(urlArray);
+        }).catch(() => {
+            console.log("An error has occured while getting news links");
+            res.send([]);
+        });
+      }
+      else{
+        console.log(companyName+" is NOT trending :(")
+        var lastTrending=results1.default.timelineData[0].formattedTime;
+        for(i in results1.default.timelineData){
+          if(results1.default.timelineData[i].value[0]==100){
+            lastTrending=results1.default.timelineData[i].formattedTime;
+          }
+        }
+        console.log(companyName+" was last trending on "+lastTrending)
+        res.send("not trending" + "+" + lastTrending);
+      }
+    }
+  });
+});
+
+
 app.listen(port, function () {
-    console.log('Example app listening on port !');
+  console.log('Example app listening on port !');
 });
