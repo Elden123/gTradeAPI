@@ -168,7 +168,7 @@ app.get('/complete/trends/:company', function(req, res) {
                   }
                   console.log(averageSentiment);
 
-                  if(numOfNews > 7) {
+                  if(numOfNews > response.articles.length - 3) {
                     console.log("***********************")
                     res.send(averageSentiment + "+" + numOfNews + ":" + result);
                   }
